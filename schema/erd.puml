@@ -1,0 +1,292 @@
+```plantuml
+@startuml CRM_Database_for_Painting_Decorating
+
+' Entity definitions with attributes
+entity "Customers" as customers {
+  * customer_id : varchar(36) <<PK>>
+  --
+  * customer_type : varchar(20)
+  first_name : varchar(50)
+  last_name : varchar(50)
+  company_name : varchar(100)
+  * email : varchar(100)
+  phone : varchar(20)
+  address_line1 : varchar(100)
+  address_line2 : varchar(100)
+  city : varchar(50)
+  state : varchar(50)
+  zip_code : varchar(20)
+  country : varchar(50)
+  lead_source : varchar(50)
+  referral_source : varchar(100)
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+  is_active : boolean
+}
+
+entity "Properties" as properties {
+  * property_id : varchar(36) <<PK>>
+  * customer_id : varchar(36) <<FK>>
+  --
+  property_name : varchar(100)
+  * property_type : varchar(50)
+  * address_line1 : varchar(100)
+  address_line2 : varchar(100)
+  * city : varchar(50)
+  * state : varchar(50)
+  * zip_code : varchar(20)
+  country : varchar(50)
+  square_footage : integer
+  number_of_rooms : integer
+  number_of_stories : integer
+  year_built : integer
+  special_instructions : text
+  access_code : varchar(20)
+  has_pets : boolean
+  has_alarm : boolean
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Projects" as projects {
+  * project_id : varchar(36) <<PK>>
+  * customer_id : varchar(36) <<FK>>
+  * property_id : varchar(36) <<FK>>
+  --
+  * project_name : varchar(100)
+  * project_type : varchar(50)
+  * status : varchar(20)
+  description : text
+  start_date : date
+  end_date : date
+  estimated_hours : decimal(10,2)
+  actual_hours : decimal(10,2)
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Estimates" as estimates {
+  * estimate_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  --
+  * estimate_number : varchar(20)
+  * estimate_date : date
+  valid_until : date
+  * status : varchar(20)
+  * subtotal : decimal(10,2)
+  tax_rate : decimal(5,2)
+  tax_amount : decimal(10,2)
+  discount_percentage : decimal(5,2)
+  discount_amount : decimal(10,2)
+  * total : decimal(10,2)
+  notes : text
+  terms_conditions : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Services" as services {
+  * service_id : varchar(36) <<PK>>
+  --
+  * service_name : varchar(100)
+  * service_category : varchar(50)
+  description : text
+  * unit_type : varchar(20)
+  default_price : decimal(10,2)
+  default_hours : decimal(5,2)
+  is_active : boolean
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "EstimateLineItems" as estimate_line_items {
+  * line_item_id : varchar(36) <<PK>>
+  * estimate_id : varchar(36) <<FK>>
+  service_id : varchar(36) <<FK>>
+  --
+  * item_type : varchar(20)
+  * description : text
+  * quantity : decimal(10,2)
+  * unit_price : decimal(10,2)
+  * line_total : decimal(10,2)
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "TeamMembers" as team_members {
+  * team_member_id : varchar(36) <<PK>>
+  --
+  * first_name : varchar(50)
+  * last_name : varchar(50)
+  email : varchar(100)
+  phone : varchar(20)
+  * role : varchar(50)
+  hourly_rate : decimal(10,2)
+  is_active : boolean
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "ProjectTeamAssignments" as project_team_assignments {
+  * assignment_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  * team_member_id : varchar(36) <<FK>>
+  --
+  role_on_project : varchar(50)
+  start_date : date
+  end_date : date
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Materials" as materials {
+  * material_id : varchar(36) <<PK>>
+  --
+  * material_name : varchar(100)
+  * material_type : varchar(50)
+  description : text
+  sku : varchar(50)
+  brand : varchar(50)
+  * default_unit : varchar(20)
+  cost_per_unit : decimal(10,2)
+  markup_percentage : decimal(5,2)
+  is_active : boolean
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "ProjectMaterials" as project_materials {
+  * project_material_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  * material_id : varchar(36) <<FK>>
+  --
+  * quantity : decimal(10,2)
+  * unit_cost : decimal(10,2)
+  * total_cost : decimal(10,2)
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Tasks" as tasks {
+  * task_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  assigned_to : varchar(36) <<FK>>
+  --
+  * task_name : varchar(100)
+  description : text
+  * status : varchar(20)
+  priority : varchar(20)
+  due_date : date
+  completed_date : date
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "ScheduleEvents" as schedule_events {
+  * event_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  --
+  * event_type : varchar(50)
+  * title : varchar(100)
+  description : text
+  * start_datetime : timestamp
+  * end_datetime : timestamp
+  all_day : boolean
+  location : varchar(100)
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "ScheduleAssignments" as schedule_assignments {
+  * assignment_id : varchar(36) <<PK>>
+  * event_id : varchar(36) <<FK>>
+  * team_member_id : varchar(36) <<FK>>
+  --
+  status : varchar(20)
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Invoices" as invoices {
+  * invoice_id : varchar(36) <<PK>>
+  * project_id : varchar(36) <<FK>>
+  * customer_id : varchar(36) <<FK>>
+  --
+  * invoice_number : varchar(20)
+  * invoice_date : date
+  * due_date : date
+  * status : varchar(20)
+  * subtotal : decimal(10,2)
+  tax_rate : decimal(5,2)
+  tax_amount : decimal(10,2)
+  discount_percentage : decimal(5,2)
+  discount_amount : decimal(10,2)
+  * total : decimal(10,2)
+  amount_paid : decimal(10,2)
+  balance : decimal(10,2)
+  notes : text
+  terms : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Payments" as payments {
+  * payment_id : varchar(36) <<PK>>
+  * invoice_id : varchar(36) <<FK>>
+  --
+  * payment_date : date
+  * payment_method : varchar(50)
+  * amount : decimal(10,2)
+  reference_number : varchar(50)
+  notes : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity "Communications" as communications {
+  * communication_id : varchar(36) <<PK>>
+  * customer_id : varchar(36) <<FK>>
+  project_id : varchar(36) <<FK>>
+  --
+  * communication_type : varchar(20)
+  subject : varchar(100)
+  content : text
+  * direction : varchar(10)
+  * status : varchar(20)
+  * communication_date : timestamp
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+' Relationship definitions
+customers ||--o{ properties : "has"
+customers ||--o{ projects : "has"
+properties ||--o{ projects : "has"
+projects ||--o{ estimates : "has"
+projects ||--o{ invoices : "has"
+projects ||--o{ tasks : "has"
+projects ||--o{ schedule_events : "has"
+projects }o--o{ team_members : "assigned to"
+projects }o--o{ materials : "uses"
+estimates ||--o{ estimate_line_items : "contains"
+services }o--o{ estimate_line_items : "used in"
+invoices ||--o{ payments : "receives"
+customers ||--o{ communications : "has"
+schedule_events ||--o{ schedule_assignments : "has"
+team_members ||--o{ schedule_assignments : "assigned to"
+team_members ||--o{ tasks : "assigned to"
+team_members ||--o{ project_team_assignments : "involved in"
+projects ||--o{ project_team_assignments : "has"
+project_team_assignments }|--|| team_members : "assigns"
+project_materials }|--|| materials : "references"
+project_materials }|--|| projects : "used in"
+
+@enduml
+```
