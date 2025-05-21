@@ -27,9 +27,9 @@ This prompt will use the directory structure at /Users/tony/crm_database_paint_d
 <continuity_resources>
 - GitHub Repository: https://github.com/aigeezer/crm_database_paint_decor
 - Todoist Project: 
-  * Project ID: [To be created if requested]
-  * Direct URL: [To be provided if requested]
-  * Access: Open the URL or search for "CRM Database Paint Decor" in your Todoist app
+  * Project ID: 2354150782
+  * Direct URL: https://app.todoist.com/app/project/6c3MRp8FgWxghVcm
+  * Access: Open the URL or search for "CRM Database - Paint & Decor" in your Todoist app
   * Contains: Implementation tasks, documentation tasks, and testing milestones
 - Project Plan: /Users/tony/crm_database_paint_decor/project_plan.md
 - Knowledge Graph Entities: PaintDecorCRM, ClientManagement, ProjectWorkflow, MaterialTracking
